@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${bike.brand} ${bike.model} - Kawasaki</title>
+    <title>Modifier ${bike.brand} ${bike.model} - Kawasaki</title>
     <style>
         * {
             margin: 0;
@@ -16,16 +16,18 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
             color: #333;
+            background: #f5f5f5;
         }
 
         /* Navigation */
         nav {
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
             padding: 1rem 0;
             position: sticky;
             top: 0;
             z-index: 100;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            border-bottom: 3px solid #00cc00;
         }
 
         nav ul {
@@ -66,72 +68,72 @@
 
         /* Main Container */
         .container {
-            max-width: 800px;
+            max-width: 600px;
             margin: 3rem auto;
             padding: 0 2rem;
         }
 
-        /* Details Card */
-        .details-card {
+        /* Form Card */
+        .form-card {
             background: white;
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+            padding: 2rem;
         }
 
-        .card-header {
-            background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #00cc00 100%);
-            color: white;
-            padding: 2rem;
+        .form-card h2 {
+            color: #1a1a1a;
+            margin-bottom: 2rem;
             text-align: center;
         }
 
-        .card-header h2 {
-            font-size: 2rem;
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
             margin-bottom: 0.5rem;
-        }
-
-        .card-header p {
-            opacity: 0.95;
-            font-size: 1.1rem;
-        }
-
-        .card-body {
-            padding: 2.5rem;
-        }
-
-        .detail-item {
-            margin: 2rem 0;
-            padding: 1.5rem;
-            background: #f5f5f5;
-            border-left: 5px solid #00cc00;
-            border-radius: 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .detail-label {
-            font-weight: 700;
-            color: #1a1a1a;
-            font-size: 1.1rem;
-        }
-
-        .detail-value {
-            color: #00cc00;
-            font-size: 1.3rem;
             font-weight: 600;
+            color: #1a1a1a;
         }
 
-        .actions {
+        input[type="text"],
+        input[type="number"],
+        textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #00cc00;
+            box-shadow: 0 0 5px rgba(0, 204, 0, 0.3);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-actions {
             display: flex;
             gap: 1rem;
             margin-top: 2rem;
-            justify-content: center;
         }
 
+        button,
         .btn {
-            padding: 1rem 2rem;
+            flex: 1;
+            padding: 1rem;
             border: none;
             border-radius: 50px;
             font-size: 1rem;
@@ -142,16 +144,16 @@
             display: inline-block;
             text-transform: uppercase;
             letter-spacing: 1px;
+            text-align: center;
         }
 
         .btn-primary {
             background: #00cc00;
             color: white;
-            box-shadow: 0 4px 15px rgba(255, 107, 53, 0.4);
         }
 
         .btn-primary:hover {
-            background: #00cc00;
+            background: #00aa00;
             transform: translateY(-3px);
             box-shadow: 0 6px 20px rgba(0, 204, 0, 0.6);
         }
@@ -159,20 +161,12 @@
         .btn-secondary {
             background: #2d2d2d;
             color: white;
-            box-shadow: 0 4px 15px rgba(45, 45, 45, 0.3);
         }
 
         .btn-secondary:hover {
             background: #1a1a1a;
             transform: translateY(-3px);
             box-shadow: 0 6px 20px rgba(45, 45, 45, 0.5);
-        }
-
-        .bike-image {
-            width: 100%;
-            height: 500px;
-            object-fit: cover;
-            display: block;
         }
 
         /* Footer */
@@ -190,29 +184,21 @@
                 font-size: 2rem;
             }
 
-            .detail-item {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .detail-value {
-                margin-top: 0.5rem;
-            }
-
-            .actions {
-                flex-direction: column;
-            }
-
-            .btn {
-                width: 100%;
-            }
-
             nav ul {
                 gap: 1rem;
             }
 
             nav a {
                 font-size: 0.9rem;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            button,
+            .btn {
+                width: 100%;
             }
         }
     </style>
@@ -228,44 +214,41 @@
 
     <!-- Header -->
     <div class="header">
-        <h1>🏍️ Détails Kawasaki</h1>
+        <h1>🏍️ Modifier une Moto</h1>
     </div>
 
-    <!-- Details Container -->
+    <!-- Form Container -->
     <div class="container">
-        <div class="details-card">
-            <img src="${bike.imageUrl}" alt="${bike.brand} ${bike.model}" class="bike-image">
-            <div class="card-header">
-                <h2>${bike.brand}</h2>
-                <p>${bike.model}</p>
-            </div>
-            <div class="card-body">
-                <div class="detail-item">
-                    <span class="detail-label">Marque</span>
-                    <span class="detail-value">${bike.brand}</span>
-                </div>
-                <div class="detail-item">
-                    <span class="detail-label">Modèle</span>
-                    <span class="detail-value">${bike.model}</span>
-                </div>
-                <div class="detail-item">
-                    <span class="detail-label">Puissance</span>
-                    <span class="detail-value">${bike.horsePower} ch</span>
+        <div class="form-card">
+            <h2>Éditer ${bike.brand} ${bike.model}</h2>
+            <form method="POST" action="${pageContext.request.contextPath}/bike/update">
+                <input type="hidden" name="id" value="${bike.id}">
+
+                <div class="form-group">
+                    <label for="brand">Marque</label>
+                    <input type="text" id="brand" name="brand" value="${bike.brand}" required>
                 </div>
 
-                <div class="actions">
-                    <a href="${pageContext.request.contextPath}/bike/update?id=${bike.id}" class="btn btn-warning">✏️ Modifier</a>
-                    <form method="POST" action="${pageContext.request.contextPath}/bike/delete" style="flex: 1;">
-                        <input type="hidden" name="id" value="${bike.id}">
-                        <button type="submit" class="btn btn-danger" style="width: 100%;">🗑️ Supprimer</button>
-                    </form>
+                <div class="form-group">
+                    <label for="model">Modèle</label>
+                    <input type="text" id="model" name="model" value="${bike.model}" required>
                 </div>
 
-                <div class="actions">
-                    <a href="${pageContext.request.contextPath}/bike" class="btn btn-secondary">← Retour à la liste</a>
-                    <a href="${pageContext.request.contextPath}/" class="btn btn-primary">Accueil</a>
+                <div class="form-group">
+                    <label for="horsePower">Puissance (ch)</label>
+                    <input type="number" id="horsePower" name="horsePower" value="${bike.horsePower}" required>
                 </div>
-            </div>
+
+                <div class="form-group">
+                    <label for="imageUrl">URL de l'image</label>
+                    <textarea id="imageUrl" name="imageUrl" required>${bike.imageUrl}</textarea>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Mettre à jour</button>
+                    <a href="${pageContext.request.contextPath}/bike/details?id=${bike.id}" class="btn btn-secondary">Annuler</a>
+                </div>
+            </form>
         </div>
     </div>
 

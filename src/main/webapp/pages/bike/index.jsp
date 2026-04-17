@@ -222,6 +222,8 @@
         <p>Explorez nos ${bikes.size()} motos Kawasaki performance</p>
     </div>
 
+    <a href="/bike/create" class="btn" style="margin: 0.5rem;">Ajouter une moto</a>
+
     <!-- Bikes Grid -->
     <div class="container">
         <div class="bikes-grid">
@@ -234,16 +236,12 @@
                     </div>
                     <div class="bike-body">
                         <div class="bike-info">
-                            <label>ID</label>
-                            <value>${bike.id}</value>
-                        </div>
-                        <div class="bike-info">
                             <label>Chevaux</label>
                             <value>${bike.horsePower} ch</value>
                         </div>
                     </div>
                     <div class="bike-footer">
-                        <a href="${pageContext.request.contextPath}/bike/details?id=${bike.id}" class="btn">Voir détails</a>
+                        <a href="${pageContext.request.contextPath}/bike/details?id=${bike.id}" class="btn" style="display: block; margin-bottom: 0.5rem;">👁️ Voir détails</a>
                     </div>
                 </div>
             </c:forEach>

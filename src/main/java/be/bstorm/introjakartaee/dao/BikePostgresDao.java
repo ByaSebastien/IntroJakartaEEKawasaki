@@ -65,16 +65,15 @@ public class BikePostgresDao implements BikeDao {
 
     @Override
     public void save(Bike bike) {
-        String sql = "INSERT INTO bikes (id, brand, model, horse_power, image_url) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO bikes (brand, model, horse_power, image_url) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConfig.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
 
-            pstmt.setInt(1, bike.getId());
-            pstmt.setString(2, bike.getBrand());
-            pstmt.setString(3, bike.getModel());
-            pstmt.setInt(4, bike.getHorsePower());
-            pstmt.setString(5, bike.getImageUrl());
+            pstmt.setString(1, bike.getBrand());
+            pstmt.setString(2, bike.getModel());
+            pstmt.setInt(3, bike.getHorsePower());
+            pstmt.setString(4, bike.getImageUrl());
 
             pstmt.executeUpdate();
         } catch (SQLException e) {

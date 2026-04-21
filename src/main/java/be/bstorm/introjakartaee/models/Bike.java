@@ -1,19 +1,24 @@
 package be.bstorm.introjakartaee.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@EqualsAndHashCode @ToString
 @NoArgsConstructor @AllArgsConstructor
 public class Bike {
 
-    public static int nextId = 11;
-
+    @Getter
     private Integer id;
+
+    @Getter @Setter
     private String brand;
+
+    @Getter @Setter
     private String model;
+
+    @Getter @Setter
     private int horsePower;
+
+    @Getter @Setter
     private String imageUrl;
 
     public Bike(String brand, String model, int horsePower, String imageUrl) {
@@ -21,6 +26,5 @@ public class Bike {
         this.model = model;
         this.horsePower = horsePower;
         this.imageUrl = imageUrl;
-        id = nextId++;
     }
 }

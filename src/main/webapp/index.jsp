@@ -266,6 +266,12 @@
         <ul>
             <li><a href="${pageContext.request.contextPath}/">Accueil</a></li>
             <li><a href="${pageContext.request.contextPath}/bike">Nos Motos</a></li>
+            <% if (session.getAttribute("user") != null) { %>
+                <li><a href="${pageContext.request.contextPath}/auth/logout">🚪 Déconnexion</a></li>
+            <% } else { %>
+                <li><a href="${pageContext.request.contextPath}/auth/login">🔐 Connexion</a></li>
+                <li><a href="${pageContext.request.contextPath}/auth/register">✍️ S'inscrire</a></li>
+            <% } %>
         </ul>
     </nav>
 

@@ -1,4 +1,4 @@
-package be.bstorm.introjakartaee.servlets;
+package be.bstorm.introjakartaee.servlets.bike;
 
 import be.bstorm.introjakartaee.dao.BikeDao;
 import jakarta.inject.Inject;

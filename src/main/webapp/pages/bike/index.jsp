@@ -1,3 +1,5 @@
+<%@ page import="be.bstorm.introjakartaee.models.enums.UserRole" %>
+<%@ page import="be.bstorm.introjakartaee.models.User" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <head>
@@ -213,6 +215,12 @@
         <ul>
             <li><a href="${pageContext.request.contextPath}/">Accueil</a></li>
             <li><a href="${pageContext.request.contextPath}/bike">Nos Motos</a></li>
+            <% if (session.getAttribute("user") != null) { %>
+                <li><a href="${pageContext.request.contextPath}/auth/logout">🚪 Déconnexion</a></li>
+            <% } else { %>
+                <li><a href="${pageContext.request.contextPath}/auth/login">🔐 Connexion</a></li>
+                <li><a href="${pageContext.request.contextPath}/auth/register">✍️ S'inscrire</a></li>
+            <% } %>
         </ul>
     </nav>
 
@@ -221,8 +229,9 @@
         <h1>🏍️ Collection Kawasaki</h1>
         <p>Explorez nos ${bikes.size()} motos Kawasaki performance</p>
     </div>
-
-    <a href="/bike/create" class="btn" style="margin: 0.5rem;">Ajouter une moto</a>
+    <% if (session.getAttribute("user") != null && ((User) session.getAttribute("user")).getRole() == UserRole.ADMIN) { %>
+        <a href="/bike/create" class="btn" style="margin: 0.5rem;">Ajouter une moto</a>
+    <% } %>
 
     <!-- Bikes Grid -->
     <div class="container">

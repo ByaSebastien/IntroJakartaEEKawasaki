@@ -1,4 +1,7 @@
+<%@ page import="be.bstorm.introjakartaee.models.User" %>
+<%@ page import="be.bstorm.introjakartaee.models.enums.UserRole" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -252,14 +255,15 @@
                     <span class="detail-label">Puissance</span>
                     <span class="detail-value">${bike.horsePower} ch</span>
                 </div>
-
-                <div class="actions">
-                    <a href="${pageContext.request.contextPath}/bike/update?id=${bike.id}" class="btn btn-warning">✏️ Modifier</a>
-                    <form method="POST" action="${pageContext.request.contextPath}/bike/delete" style="flex: 1;">
-                        <input type="hidden" name="id" value="${bike.id}">
-                        <button type="submit" class="btn btn-danger" style="width: 100%;">🗑️ Supprimer</button>
-                    </form>
-                </div>
+                <% if (session.getAttribute("user") != null && ((User) session.getAttribute("user")).getRole() == UserRole.ADMIN) { %>
+                    <div class="actions">
+                        <a href="${pageContext.request.contextPath}/bike/update?id=${bike.id}" class="btn btn-warning">✏️ Modifier</a>
+                        <form method="POST" action="${pageContext.request.contextPath}/bike/delete" style="flex: 1;">
+                            <input type="hidden" name="id" value="${bike.id}">
+                            <button type="submit" class="btn btn-danger" style="width: 100%;">🗑️ Supprimer</button>
+                        </form>
+                    </div>
+                <% } %>
 
                 <div class="actions">
                     <a href="${pageContext.request.contextPath}/bike" class="btn btn-secondary">← Retour à la liste</a>

@@ -1,5 +1,7 @@
 package be.bstorm.introjakartaee.db;
 
+import org.mindrot.jbcrypt.BCrypt;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -82,6 +84,25 @@ public class DatabaseConfig {
                 count++;
             }
             System.out.println("✅ " + count + " motos insérées avec succès");
+
+            // SEED DATA - Création des utilisateurs avec mots de passe hashés
+            System.out.println("👥 Insertion des utilisateurs...");
+            String adminPassword = BCrypt.hashpw("admin123", BCrypt.gensalt());
+            String userPassword = BCrypt.hashpw("user123", BCrypt.gensalt());
+
+            String[] userInsertStatements = {
+                    "INSERT INTO users (email, password, role) VALUES ('admin@kawasaki.com', '" + adminPassword + "', 'ADMIN')",
+                    "INSERT INTO users (email, password, role) VALUES ('user@kawasaki.com', '" + userPassword + "', 'USER')"
+            };
+
+            int userCount = 0;
+            for (String sql : userInsertStatements) {
+                stmt.execute(sql);
+                userCount++;
+            }
+            System.out.println("✅ " + userCount + " utilisateurs insérés avec succès");
+            System.out.println("   📧 Admin: admin@kawasaki.com (mot de passe: admin123)");
+            System.out.println("   📧 User: user@kawasaki.com (mot de passe: user123)");
 
             System.out.println("🏍️ Base de données initialisée avec succès!\n");
 

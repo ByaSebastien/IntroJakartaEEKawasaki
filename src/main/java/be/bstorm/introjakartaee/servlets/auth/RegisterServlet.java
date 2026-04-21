@@ -13,18 +13,66 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
 
+/**
+ * Servlet gérant l'inscription des nouveaux utilisateurs.
+ *
+ * Traite les requêtes GET pour afficher le formulaire d'inscription
+ * et les requêtes POST pour créer un nouvel utilisateur après validation.
+ *
+ * Accès: uniquement pour les utilisateurs non connectés (filtre AuthFilter)
+ * Routes:
+ * - GET /auth/register : affiche le formulaire
+ * - POST /auth/register : crée un nouvel utilisateur
+ *
+ * Validations effectuées:
+ * - Email non vide et valide
+ * - Mot de passe au minimum 6 caractères
+ * - Email pas déjà enregistré
+ *
+ * @author IntroJakartaEE
+ * @version 1.0
+ */
 @WebServlet(value = "/auth/register")
 public class RegisterServlet extends HttpServlet {
 
+    /**
+     * DAO pour accéder aux données des utilisateurs.
+     * Injecté par le conteneur Jakarta EE.
+     */
     @Inject
     private UserDao userDao;
 
+    /**
+     * Affiche le formulaire d'inscription.
+     *
+     * @param req la requête HTTP
+     * @param resp la réponse HTTP
+     * @throws ServletException si une erreur servlet se produit
+     * @throws IOException si une erreur d'entrée/sortie se produit
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         req.getRequestDispatcher("/pages/auth/register.jsp").forward(req, resp);
     }
 
+    /**
+     * Traite la soumission du formulaire d'inscription.
+     *
+     * Valide l'email et le mot de passe, puis vérifie qu'aucun utilisateur
+     * n'existe déjà avec cet email. Si tout est valide, crée un nouvel utilisateur
+     * avec un mot de passe hashé et le rôle USER par défaut.
+     *
+     * Validations:
+     * - Email non vide
+     * - Mot de passe au minimum 6 caractères
+     * - Email pas déjà utilisé dans la base de données
+     *
+     * @param req la requête HTTP contenant les paramètres "email" et "password"
+     * @param resp la réponse HTTP
+     * @throws ServletException si une erreur servlet se produit
+     * @throws IOException si une erreur d'entrée/sortie se produit
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 

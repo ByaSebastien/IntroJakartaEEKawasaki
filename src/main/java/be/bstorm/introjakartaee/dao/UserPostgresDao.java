@@ -11,9 +11,23 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Implémentation PostgreSQL de l'interface {@link UserDao}.
+ *
+ * Gère la persistence des utilisateurs dans une base de données PostgreSQL.
+ * Utilise des requêtes SQL préparées pour éviter les injections SQL.
+ *
+ * @author IntroJakartaEE
+ * @version 1.0
+ */
 @ApplicationScoped
 public class UserPostgresDao implements UserDao {
 
+    /**
+     * Sauvegarde un nouvel utilisateur dans la base de données PostgreSQL.
+     *
+     * @param user l'utilisateur à sauvegarder (ne doit pas avoir d'ID)
+     */
     @Override
     public void save(User user) {
         String sql = "INSERT INTO users (email, password, role) VALUES (?, ?, ?)";
@@ -32,6 +46,12 @@ public class UserPostgresDao implements UserDao {
         }
     }
 
+    /**
+     * Récupère un utilisateur de la base de données PostgreSQL en fonction de son email.
+     *
+     * @param email l'email de l'utilisateur à rechercher
+     * @return l'utilisateur trouvé avec tous ses détails, ou null s'il n'existe pas
+     */
     @Override
     public User findByEmail(String email) {
         String sql = "SELECT id, email, password, role FROM users WHERE email = ?";

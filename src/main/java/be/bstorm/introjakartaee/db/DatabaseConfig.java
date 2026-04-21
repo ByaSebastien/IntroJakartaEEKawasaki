@@ -7,12 +7,30 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+/**
+ * Classe de configuration et de gestion de la base de données PostgreSQL.
+ *
+ * Gère la connexion à la base de données et l'initialisation des tables
+ * et données de démarrage. Inclut des utilisateurs de test et des motos pré-configurées.
+ *
+ * @author IntroJakartaEE
+ * @version 1.0
+ */
 public class DatabaseConfig {
-    // Configuration PostgreSQL
+
+    /** URL de connexion à la base de données PostgreSQL */
     private static final String DB_URL = "jdbc:postgresql://localhost:5432/kawasaki_db";
+
+    /** Nom d'utilisateur pour la connexion PostgreSQL */
     private static final String DB_USER = "postgres";
+
+    /** Mot de passe pour la connexion PostgreSQL */
     private static final String DB_PASSWORD = "postgres";
 
+    /**
+     * Bloc d'initialisation statique qui charge le driver PostgreSQL
+     * et initialise la base de données au démarrage de l'application.
+     */
     static {
         try {
             Class.forName("org.postgresql.Driver");
@@ -23,10 +41,28 @@ public class DatabaseConfig {
         }
     }
 
+    /**
+     * Obtient une connexion à la base de données PostgreSQL.
+     *
+     * @return une connexion ouverte à la base de données
+     * @throws SQLException si la connexion échoue
+     */
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
     }
 
+    /**
+     * Initialise la base de données en créant les tables nécessaires
+     * et en insérant les données de démarrage (utilisateurs et motos).
+     *
+     * Cette méthode:
+     * - Supprime les tables existantes (si elles existent)
+     * - Crée les nouvelles tables (bikes et users)
+     * - Insère 10 motos Kawasaki de démonstration
+     * - Crée deux utilisateurs de test: admin@kawasaki.com et user@kawasaki.com
+     *
+     * Les mots de passe sont hashés avec BCrypt pour la sécurité.
+     */
     private static void initializeDatabase() {
         try (Connection conn = getConnection();
              Statement stmt = conn.createStatement()) {

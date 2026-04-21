@@ -11,12 +11,47 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+/**
+ * Servlet gérant la modification des motocyclettes existantes.
+ *
+ * Traite les requêtes GET pour afficher le formulaire de modification
+ * pré-rempli avec les données actuelles de la moto, et les requêtes POST
+ * pour enregistrer les modifications dans la base de données.
+ *
+ * Accès: réservé aux administrateurs (filtre AuthFilter)
+ * Routes:
+ * - GET /bike/update?id=XX : affiche le formulaire avec les données de la moto XX
+ * - POST /bike/update : met à jour la moto
+ *
+ * @author IntroJakartaEE
+ * @version 1.0
+ */
 @WebServlet(value = "/bike/update")
 public class BikeUpdateServlet extends HttpServlet {
 
+    /**
+     * DAO pour accéder aux données des motos.
+     * Injecté par le conteneur Jakarta EE.
+     */
     @Inject
     private BikeDao bikeDao;
 
+    /**
+     * Affiche le formulaire de modification d'une motocyclette existante.
+     *
+     * Récupère l'ID de la moto depuis le paramètre "id" de la requête.
+     * Charge les données actuelles de la moto et les passe au formulaire.
+     *
+     * Validations:
+     * - Le paramètre "id" doit être présent et non vide
+     * - L'ID doit être un nombre entier valide
+     * - La moto avec cet ID doit exister dans la base de données
+     *
+     * @param req la requête HTTP contenant le paramètre "id"
+     * @param resp la réponse HTTP
+     * @throws ServletException si une erreur servlet se produit
+     * @throws IOException si une erreur d'entrée/sortie se produit
+     */
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String idParam = req.getParameter("id");
@@ -42,6 +77,26 @@ public class BikeUpdateServlet extends HttpServlet {
         }
     }
 
+    /**
+     * Traite la soumission du formulaire de modification d'une moto.
+     *
+     * Récupère l'ID de la moto et les nouveaux paramètres du formulaire,
+     * met à jour la moto existante avec les nouvelles valeurs,
+     * et la sauvegarde dans la base de données.
+     * Redirige ensuite vers la page de détails de la moto modifiée.
+     *
+     * Paramètres attendus:
+     * - id: identifiant de la moto à mettre à jour
+     * - brand: nouvelle marque de la moto
+     * - model: nouveau modèle de la moto
+     * - horsePower: nouvelle puissance en chevaux-vapeur
+     * - imageUrl: nouvelle URL de l'image
+     *
+     * @param req la requête HTTP contenant l'ID et les données du formulaire
+     * @param resp la réponse HTTP
+     * @throws ServletException si une erreur servlet se produit
+     * @throws IOException si une erreur d'entrée/sortie se produit
+     */
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String idParam = req.getParameter("id");

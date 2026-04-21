@@ -8,9 +8,32 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+/**
+ * Filtre d'authentification et d'autorisation pour l'application.
+ *
+ * Contrôle l'accès aux différentes ressources en fonction du statut de connexion
+ * et du rôle de l'utilisateur (ADMIN ou USER).
+ *
+ * Les routes sont catégorisées comme suit:
+ * - Routes publiques: accessibles à tous
+ * - Routes d'authentification: réservées aux utilisateurs non connectés
+ * - Routes administrateur: réservées aux administrateurs uniquement
+ *
+ * @author IntroJakartaEE
+ * @version 1.0
+ */
 @WebFilter(urlPatterns = "/*")
 public class AuthFilter implements Filter {
 
+    /**
+     * Applique les règles d'authentification et d'autorisation à chaque requête.
+     *
+     * @param request la requête HTTP
+     * @param response la réponse HTTP
+     * @param chain la chaîne de filtres
+     * @throws IOException si une erreur d'entrée/sortie se produit
+     * @throws ServletException si une erreur servlet se produit
+     */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
@@ -61,7 +84,16 @@ public class AuthFilter implements Filter {
     }
 
     /**
-     * Routes publiques accessibles à TOUS
+     * Détermine si une route est publique et accessible à tous.
+     *
+     * Routes publiques incluent:
+     * - La page d'accueil
+     * - La liste des motos
+     * - Les détails d'une moto
+     * - Les ressources statiques (CSS, JS, images)
+     *
+     * @param path le chemin de la requête
+     * @return true si la route est publique, false sinon
      */
     private boolean isPublicRoute(String path) {
         return path.equals("/") || 
@@ -80,7 +112,17 @@ public class AuthFilter implements Filter {
     }
 
     /**
-     * Routes d'authentification (login/register) - UNIQUEMENT pour non-connecté
+     * Détermine si une route est une route d'authentification.
+     *
+     * Ces routes sont accessibles UNIQUEMENT aux utilisateurs non connectés.
+     * Les utilisateurs connectés sont redirigés vers la liste des motos.
+     *
+     * Routes d'authentification incluent:
+     * - Login
+     * - Register
+     *
+     * @param path le chemin de la requête
+     * @return true si c'est une route d'authentification, false sinon
      */
     private boolean isAuthRoute(String path) {
         return path.equals("/auth/login") ||
@@ -88,7 +130,19 @@ public class AuthFilter implements Filter {
     }
 
     /**
-     * Routes administrateur (create/update/delete) - UNIQUEMENT pour ADMIN
+     * Détermine si une route est réservée aux administrateurs.
+     *
+     * Ces routes sont accessibles UNIQUEMENT aux utilisateurs avec le rôle ADMIN.
+     * Les autres utilisateurs reçoivent une erreur 403 Forbidden.
+     * Les utilisateurs non connectés sont redirigés vers le login.
+     *
+     * Routes administrateur incluent:
+     * - Création d'une moto
+     * - Modification d'une moto
+     * - Suppression d'une moto
+     *
+     * @param path le chemin de la requête
+     * @return true si c'est une route administrative, false sinon
      */
     private boolean isAdminRoute(String path) {
         return path.equals("/bike/create") ||

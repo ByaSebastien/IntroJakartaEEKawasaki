@@ -8,9 +8,25 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Implémentation PostgreSQL de l'interface {@link BikeDao}.
+ *
+ * Gère la persistence des motocyclettes dans une base de données PostgreSQL.
+ * Utilise des requêtes SQL préparées pour éviter les injections SQL et des
+ * transactions pour assurer l'intégrité des données.
+ *
+ * @author IntroJakartaEE
+ * @version 1.0
+ */
 @ApplicationScoped
 public class BikePostgresDao implements BikeDao {
 
+    /**
+     * Récupère la liste de toutes les motocyclettes de la base de données PostgreSQL,
+     * triées par identifiant croissant.
+     *
+     * @return une liste contenant toutes les motos, ou une liste vide s'il n'y en a pas
+     */
     @Override
     public List<Bike> findAll() {
         List<Bike> bikes = new ArrayList<>();
@@ -37,6 +53,12 @@ public class BikePostgresDao implements BikeDao {
         return bikes;
     }
 
+    /**
+     * Récupère une motocyclette en fonction de son identifiant unique.
+     *
+     * @param id l'identifiant de la moto à rechercher
+     * @return la moto trouvée avec tous ses détails, ou null si elle n'existe pas
+     */
     @Override
     public Bike findById(int id) {
         String sql = "SELECT id, brand, model, horse_power, image_url FROM bikes WHERE id = ?";
@@ -63,6 +85,11 @@ public class BikePostgresDao implements BikeDao {
         return null;
     }
 
+    /**
+     * Sauvegarde une nouvelle motocyclette dans la base de données PostgreSQL.
+     *
+     * @param bike la moto à sauvegarder (ne doit pas avoir d'ID)
+     */
     @Override
     public void save(Bike bike) {
         String sql = "INSERT INTO bikes (brand, model, horse_power, image_url) VALUES (?, ?, ?, ?)";
@@ -82,6 +109,12 @@ public class BikePostgresDao implements BikeDao {
         }
     }
 
+    /**
+     * Met à jour une motocyclette existante dans la base de données PostgreSQL.
+     * La moto doit avoir un identifiant valide pour être mise à jour.
+     *
+     * @param bike la moto à mettre à jour avec toutes ses nouvelles données
+     */
     @Override
     public void update(Bike bike) {
         String sql = "UPDATE bikes SET brand = ?, model = ?, horse_power = ?, image_url = ? WHERE id = ?";
@@ -102,6 +135,11 @@ public class BikePostgresDao implements BikeDao {
         }
     }
 
+    /**
+     * Supprime une motocyclette de la base de données PostgreSQL en fonction de son identifiant.
+     *
+     * @param id l'identifiant de la moto à supprimer
+     */
     @Override
     public void delete(int id) {
         String sql = "DELETE FROM bikes WHERE id = ?";

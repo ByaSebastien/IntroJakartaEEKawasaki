@@ -1006,6 +1006,6 @@ Le monde du développement web est vaste, mais vous avez les bonnes fondations p
 
 ---
 
-*Maintenu par l'équipe Bya Sébastien*  
+*Maintenu par Bya Sébastien*  
 *Dernière mise à jour: 2026*
 
